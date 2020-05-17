@@ -31,11 +31,11 @@ from send2trash import send2trash # I really don't use, because don't work reall
 def deleteFile(pathFile):
     if os.path.exists(pathFile):
         #retorno = send2trash(pathFile) # Libreria que enviar los archivos o carpetas borrados a la papelera de reciclaje.
-        retorno = os.remove(pathFile) # Este comando borra y despues de borrado no se pueden recuperar los archivos
-        print(retorno)
+        os.remove(pathFile) # Este comando borra y despues de borrado no se pueden recuperar los archivos
+        print("Archivo {} SE BORRÓ.\n".format(pathFile))
 
     else:
-        print("Archivos no se pudieron eliminar.")
+        print(" ¡¡¡¡¡¡¡ ARCHIVO NO SE PUDO ELIMINAR !!!!!!!")
 
 
 def listSubFolders(MainFolder):
@@ -52,6 +52,18 @@ def listSubFolders(MainFolder):
         for subfolder in mi_List:
             mi_List.extend(listSubFolders(subfolder))
         return mi_List
+
+def listSubFoldersOptimize(MainFolder):
+    mi_List = []
+    #os.walk(top, topdown=True, onerror=None, followlinks=False) #template how to use the instrucction
+    for root, dirs, files in os.walk(MainFolder, topdown=True, onerror=None, followlinks=False):
+        for dir in dirs:
+            #print("{}\{}".format(root,dir))
+            mi_List.append("{}\{}".format(root,dir))
+            #print(dirs)
+            #print(files)
+    return mi_List
+
 
 
 def listFiles(MainFolder):
@@ -82,7 +94,8 @@ def run():
     findPath = input("Digita path de busqueda: por ejemplo (D:\\)   \n?? ")
     while os.path.exists(findPath) is False:  # validation
             findPath = input("Digita path de busqueda: por ejemplo (D:\\)   \n?? ")
-    folders = listSubFolders(findPath)
+    folders = listSubFoldersOptimize(findPath)
+    #folders = listSubFoldersOptimize(findPath)  #Before optimize I used this function
     folders.insert(0, findPath)
 
     #print(type(folders))
@@ -109,4 +122,6 @@ def run():
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Main ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 if __name__ == '__main__':
     run()
+
+
 #  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
